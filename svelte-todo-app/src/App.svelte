@@ -4,27 +4,34 @@
   
 	// 作成ボタンを押したときの処理
 	const handleClickCreateButton = () => {
-	  alert(title);
-	  title = '';
+		//todoList.push(title);
+		todoList=[...todoList, title]; 
+	  	title = '';
 	};
-	</script>
+
+	// 削除ボタンを押したときの処理
+	const handleClickDeleteButton = (index) => {
+		todoList=todoList.splice(index, 1);
+	  	//title = '';
+		console.log(todoList);
+
+	};
+</script>
 	
 	<div>
-		<form>
 		<label>
 			タイトル
 			<input bind:value={title} />
 		</label>
 		<button on:click={handleClickCreateButton}>作成</button>
-		</form>
 	</div>
   
 	{#if todoList.length === 0}
 	<div>アイテムを作成してください</div>
 	{:else}
 	<ul>
-		{#each todoList as todoItem}
-		<li>{todoItem}</li>
+		{#each todoList as todoItem,index (index)}
+		<li>{todoItem} <button on:click={()=>{handleClickDeleteButton(index)}}>削除</button></li>
 		{/each}
 	</ul>
 	{/if}
