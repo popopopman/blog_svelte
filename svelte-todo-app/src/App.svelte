@@ -4,24 +4,23 @@
   
 	// 作成ボタンを押したときの処理
 	const handleClickCreateButton = () => {
-		//todoList.push(title);
-		todoList=[...todoList, title]; 
-	  	title = '';
+		if (title.trim() !== '') {
+			todoList = [...todoList, title];
+			title = '';
+		}
 	};
 
 	// 削除ボタンを押したときの処理
 	const handleClickDeleteButton = (index) => {
-		todoList=todoList.splice(index, 1);
-	  	//title = '';
+		// todoList = todoList.filter((_, i) => i !== index);
 		console.log(todoList);
 
 	};
-</script>
 	
 	<div>
 		<label>
 			タイトル
-			<input bind:value={title} />
+			<input bind:value={title} placeholder="新しいタスクを入力" />
 		</label>
 		<button on:click={handleClickCreateButton}>作成</button>
 	</div>
