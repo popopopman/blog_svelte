@@ -5,8 +5,7 @@ services:
     image: node:20 # ここで使用する Node.js のバージョンを指定します
     working_dir: /app # コンテナ内の作業ディレクトリ
     volumes:
-      - .:/app # ホストマシンの現在のディレクトリをコンテナにマウント
-      - /app/node_modules # node_modules ディレクトリをボリュームとして扱い、ホスト側の影響を受けないようにします
+      - ./blog_svelte/src:/app # ホストマシンの現在のディレクトリをコンテナにマウント
     ports:
       - "3000:3000" # ホストマシンのポート3000をコンテナのポート3000にマッピング
-    #command: sh -c "npm install && npm start" # コンテナ起動時に実行されるコマンド
+    command: sh -c "npm install && npm start && npm install express body-parser" # コンテナ起動時に実行されるコマンド
