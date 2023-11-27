@@ -1,59 +1,61 @@
 <script lang="ts">
-	let title = '';
-	let todoList = [];
+    let title = '';
+    let todoList = [];
 
-	// ファイルからtodoリストを読み込む関数
-	async function loadTodoList() {
-	const response = await fetch('/data/todolist.json');
-	const data = await response.json();
-	todoList = data.todoList;
-	}
+    // APIのベースURL（サーバーのURL）
+    const API_BASE_URL = 'http://localhost:3000';
 
-	// コンポーネントの初期化時に読み込み
-	loadTodoList();
+    // サーバーからTodoリストを読み込む関数
+    async function loadTodoList() {
+        const response = await fetch(`${API_BASE_URL}/todolist`);
+        todoList = await response.json();
+    }
 
-	// ファイルにtodoリストを保存する関数
-	async function saveTodoList() {
-	await fetch('/data/todolist.json', {
-		method: 'POST', // サーバーサイドで処理するためのエンドポイント
-		headers: {
-		'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ todoList })
-	});
-	}
+    // コンポーネントの初期化時にTodoリストを読み込み
+    loadTodoList();
 
-	// 作成ボタンを押したときの処理
-	const handleClickCreateButton = () => {
-		if (title.trim() !== '') {
-			todoList = [...todoList, title];
-			title = '';
-		}
-		saveTodoList();
-	};
+    // サーバーにTodoリストを保存する関数
+    async function saveTodoList() {
+        await fetch(`${API_BASE_URL}/todolist`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(todoList)
+        });
+    }
 
-	// 削除ボタンを押したときの処理
-	const handleClickDeleteButton = (index) => {
-		todoList = todoList.filter((_, i) => i !== index);
-		saveTodoList();
-	};
+    // 作成ボタンを押したときの処理
+    function handleClickCreateButton() {
+        if (title.trim() !== '') {
+            const newTodo = { id: Date.now(), title: title };
+            todoList = [...todoList, newTodo];
+            title = '';
+            saveTodoList();
+        }
+    }
 
+    // 削除ボタンを押したときの処理
+    function handleClickDeleteButton(id) {
+        todoList = todoList.filter(todo => todo.id !== id);
+        saveTodoList();
+    }
 </script>
-	
-	<div>
-		<label>
-			タイトル
-			<input bind:value={title} />
-		</label>
-		<button on:click={handleClickCreateButton}>作成</button>
-	</div>
-  
-	{#if todoList.length === 0}
-	<div>アイテムを作成してください</div>
-	{:else}
-	<ul>
-		{#each todoList as todoItem,index (index)}
-		<li>{todoItem} <button on:click={()=>{handleClickDeleteButton(index)}}>削除</button></li>
-		{/each}
-	</ul>
-	{/if}
+
+<div>
+    <label>
+        タイトル
+        <input bind:value={title} />
+    </label>
+    <button on:click={handleClickCreateButton}>作成</button>
+</div>
+
+{#if todoList.length === 0}
+    <div>アイテムを作成してください</div>
+{:else}
+    <ul>
+        {#each todoList as todoItem (todoItem.id)}
+            <li>{todoItem.title} <button on:click={() => handleClickDeleteButton(todoItem.id)}>削除</button></li>
+        {/each}
+    </ul>
+{/if}
