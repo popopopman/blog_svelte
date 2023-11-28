@@ -4,6 +4,11 @@ src/App.sveltehtml, body {
 	height: 100%;
 }
 
+:root {
+    --primary-color: #0e4c7f; /* 青 */
+    --secondary-color: #d4c435; /* 黄色 */
+}
+
 body {
 	color: #333;
 	margin: 0;

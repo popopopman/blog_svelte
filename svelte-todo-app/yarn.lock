@@ -42,6 +42,26 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@lit-labs/ssr-dom-shim@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/@lit-labs/ssr-dom-shim/-/ssr-dom-shim-1.1.2.tgz"
+  integrity sha512-jnOD+/+dSrfTWYfSXBXlo5l5f0q1UuJo3tkbMDCYA2lKUYq79jaxqtGEvnRoh049nt1vdo1+45RinipU6FGY2g==
+
+"@lit/reactive-element@^2.0.0":
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/@lit/reactive-element/-/reactive-element-2.0.2.tgz"
+  integrity sha512-SVOwLAWUQg3Ji1egtOt1UiFe4zdDpnWHyc5qctSceJ5XIu0Uc76YmGpIjZgx9YJ0XtdW0Jm507sDvjOu+HnB8w==
+  dependencies:
+    "@lit-labs/ssr-dom-shim" "^1.1.2"
+
+"@material/web@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@material/web/-/web-1.0.1.tgz"
+  integrity sha512-AilQTWdp+lgPzoUGNj/CyrMsULLdzhHiiYs6XXSIpX/t/eGQkiPP4CAwvjqANuV+YZC0hLIo+s64BIgZo8Ghkw==
+  dependencies:
+    lit "^2.7.4 || ^3.0.0"
+    tslib "^2.4.0"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -79,6 +99,13 @@
     glob "^8.0.3"
     is-reference "1.2.1"
     magic-string "^0.27.0"
+
+"@rollup/plugin-json@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/@rollup/plugin-json/-/plugin-json-6.0.1.tgz"
+  integrity sha512-RgVfl5hWMkxN1h/uZj8FVESvPuBJ/uf6ly6GTj0GONnkfoBN5KC0MSz+PN2OLDgYXMhtG0mWpTrkiOjoxAIevw==
+  dependencies:
+    "@rollup/pluginutils" "^5.0.1"
 
 "@rollup/plugin-node-resolve@^15.0.0":
   version "15.2.3"
@@ -145,6 +172,11 @@
   version "1.20.2"
   resolved "https://registry.npmjs.org/@types/resolve/-/resolve-1.20.2.tgz"
   integrity sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==
+
+"@types/trusted-types@^2.0.2":
+  version "2.0.7"
+  resolved "https://registry.npmjs.org/@types/trusted-types/-/trusted-types-2.0.7.tgz"
+  integrity sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==
 
 acorn@^8.8.2:
   version "8.11.2"
@@ -431,6 +463,31 @@ kleur@^4.1.4:
   version "4.1.5"
   resolved "https://registry.npmjs.org/kleur/-/kleur-4.1.5.tgz"
   integrity sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==
+
+lit-element@^4.0.0:
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/lit-element/-/lit-element-4.0.2.tgz"
+  integrity sha512-/W6WQZUa5VEXwC7H9tbtDMdSs9aWil3Ou8hU6z2cOKWbsm/tXPAcsoaHVEtrDo0zcOIE5GF6QgU55tlGL2Nihg==
+  dependencies:
+    "@lit-labs/ssr-dom-shim" "^1.1.2"
+    "@lit/reactive-element" "^2.0.0"
+    lit-html "^3.1.0"
+
+lit-html@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/lit-html/-/lit-html-3.1.0.tgz"
+  integrity sha512-FwAjq3iNsaO6SOZXEIpeROlJLUlrbyMkn4iuv4f4u1H40Jw8wkeR/OUXZUHUoiYabGk8Y4Y0F/rgq+R4MrOLmA==
+  dependencies:
+    "@types/trusted-types" "^2.0.2"
+
+"lit@^2.7.4 || ^3.0.0":
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/lit/-/lit-3.1.0.tgz"
+  integrity sha512-rzo/hmUqX8zmOdamDAeydfjsGXbbdtAFqMhmocnh2j9aDYqbu0fjXygjCa0T99Od9VQ/2itwaGrjZz/ZELVl7w==
+  dependencies:
+    "@lit/reactive-element" "^2.0.0"
+    lit-element "^4.0.0"
+    lit-html "^3.1.0"
 
 livereload-js@^3.3.1:
   version "3.4.1"
@@ -802,7 +859,7 @@ totalist@^3.0.0:
   resolved "https://registry.npmjs.org/totalist/-/totalist-3.0.1.tgz"
   integrity sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==
 
-tslib@*, tslib@^2.5.0:
+tslib@*, tslib@^2.4.0, tslib@^2.5.0:
   version "2.6.2"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.6.2.tgz"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
