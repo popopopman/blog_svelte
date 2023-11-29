@@ -1,55 +1,55 @@
 <script lang="ts" type="module" src="./index.js">
-	let title = '';
-	let todoList = [];
+    import { fade } from 'svelte/transition';
 
-	// 作成ボタンを押したときの処理
-	const handleClickCreateButton = () => {
-		if (title.trim() !== '') {
-			todoList = [...todoList, title];
-			title = '';
-		}
-	};
+    type TodoItem = {
+        id: number;
+        title: string;
+    };
+    let title = '';
+    let todoList: TodoItem[] = [];
 
-	// 削除ボタンを押したときの処理
-	const handleClickDeleteButton = (index) => {
-		todoList = todoList.filter((_, i) => i !== index);
-	};
+    // リスト追加
+    const handleClickCreateButton = () => {
+        if (title.trim() !== '') {
+            const id = new Date().getTime();
+            todoList = [...todoList, { id, title }]; // 初期状態は未完了
+            title = '';
+        }
+    };
 
+    // 削除処理
+    const handleClickDeleteButton = (index) => {
+        todoList = todoList.filter((_, i) => i !== index);
+    };
 </script>
-<style>
-    .mdc-button {
-        background-color: var(--primary-color);
-        color: var(--secondary-color);
-    }
 
-    .mdc-text-field--filled .mdc-floating-label {
-        color: var(--primary-color);
-    }
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="mb-3">
+                <label for="title" class="form-label">ToDoリスト</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="title" bind:value={title}>
+                    <button class="btn btn-primary" on:click={handleClickCreateButton}>作成</button>
+                </div>
+            </div>
 
-    .mdc-text-field--filled .mdc-line-ripple {
-        background-color: var(--primary-color);
-    }
-</style>
-	
-<div>
-    <label class="mdc-text-field mdc-text-field--filled">
-        <span class="mdc-text-field__ripple"></span>
-        <input class="mdc-text-field__input" type="text" bind:value={title} />
-        <span class="mdc-floating-label">タイトル</span>
-        <span class="mdc-line-ripple"></span>
-    </label>
-    <button class="mdc-button mdc-button--raised" on:click={handleClickCreateButton}>作成</button>
+            {#if todoList.length === 0}
+            <div class="alert alert-info">アイテムを作成してください</div>
+            {:else}
+            <ul class="list-group">
+                {#each todoList as todoItem, index (todoItem.id)}
+                <li transition:fade class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for={`todo-${todoItem.id}`}>{todoItem.title}</label>
+                    </div>
+                    <button class="btn btn-danger" on:click={() => handleClickDeleteButton(index)}>
+                        <i class="bi bi-trash"></i>
+                    </button>                    
+                </li>
+                {/each}
+            </ul>
+            {/if}
+        </div>
+    </div>
 </div>
-
-{#if todoList.length === 0}
-<div>アイテムを作成してください</div>
-{:else}
-<ul class="mdc-list">
-    {#each todoList as todoItem, index (index)}
-    <li class="mdc-list-item">
-        {todoItem}
-        <button class="mdc-icon-button material-icons" on:click={()=>{handleClickDeleteButton(index)}}>削除</button>
-    </li>
-    {/each}
-</ul>
-{/if}
