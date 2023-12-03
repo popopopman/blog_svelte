@@ -8,4 +8,4 @@ services:
       - ./blog_svelte/src:/app # ホストマシンの現在のディレクトリをコンテナにマウント
     ports:
       - "3000:3000" # ホストマシンのポート3000をコンテナのポート3000にマッピング
-    command: sh -c "npm install && npm start && npm install material-components-web" # コンテナ起動時に実行されるコマンド
+    command: sh -c "npm install && npm start && npm install material-components-web && npm install --save-dev svelte-dnd-action" # コンテナ起動時に実行されるコマンド
