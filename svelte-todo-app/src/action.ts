@@ -11,8 +11,8 @@ export const createItem = (title: string, list: Item[]): Item[] => {
     return list;
 };
 
-export const deleteItem = (index: number, list: Item[]): Item[] => {
-    return list.filter((_, i) => i !== index);
+export const deleteItem = (id: number, list: Item[]): Item[] => {
+    return list.filter(item => item.id !== id);
 };
 
 export function updateList(event, sourceList) {
