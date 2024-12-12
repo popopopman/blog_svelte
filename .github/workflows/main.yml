@@ -8,14 +8,9 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Get anonymous token
-        run: |
-          # Docker Hubの匿名トークン取得
-          TOKEN=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull" | jq -r .token)
-          echo "TOKEN=$TOKEN" >> $GITHUB_ENV
-
       - name: Check Rate Limits
         run: |
+          TOKEN=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull" | jq -r .token)
           echo "TOKEN: $TOKEN"
           response=$(curl -v -sI -H "Authorization: Bearer $TOKEN" "https://registry-1.docker.io/v2/library/alpine/manifests/latest")
           echo "Full headers:"
