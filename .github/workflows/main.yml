@@ -16,9 +16,12 @@ jobs:
 
       - name: Check Rate Limits
         run: |
-          # トークンを利用してRate Limit情報取得
-          response=$(curl -sI -H "Authorization: Bearer $TOKEN" "https://registry-1.docker.io/v2/library/alpine/manifests/latest")
+          echo "TOKEN: $TOKEN"
+          response=$(curl -v -sI -H "Authorization: Bearer $TOKEN" "https://registry-1.docker.io/v2/library/alpine/manifests/latest")
+          echo "Full headers:"
           echo "$response"
+          
           echo "----"
           remaining=$(echo "$response" | grep -i "RateLimit-Remaining" | awk '{print $2}')
           echo "RateLimit-Remaining: $remaining"
+
