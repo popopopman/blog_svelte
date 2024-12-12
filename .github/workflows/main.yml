@@ -5,20 +5,25 @@ jobs:
   check-rate-limits:
     runs-on: ubuntu-latest
     steps:
-      - name: Pull an image anonymously
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Get anonymous token
+        run: |
+          # "repository:library/alpine:pull" のscopeで匿名トークンを取得する
+          token=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull" | jq -r .token)
+          echo "token=$token" >> $GITHUB_ENV
+
+      - name: Docker pull anonymously
         run: docker pull alpine:latest
 
       - name: Check Rate Limits
         run: |
-          # Docker HubのV2 APIをHEADリクエストで叩くことで、RateLimitヘッダーを取得できます。
-          # ここでは例としてalpineイメージを使用しています。
-          response=$(curl -s -I https://registry-1.docker.io/v2/library/alpine/manifests/latest)
+          # 取得したトークンをAuthorizationヘッダにセットしてHEADリクエスト
+          response=$(curl -s -I -H "Authorization: Bearer $token" https://registry-1.docker.io/v2/library/alpine/manifests/latest)
           
-          # レスポンスヘッダー全体を表示
           echo "$response"
           echo "----"
 
-          # RateLimit-Remainingの値のみ抽出
           remaining=$(echo "$response" | grep -i "RateLimit-Remaining" | awk '{print $2}')
-          
           echo "RateLimit-Remaining: $remaining"
