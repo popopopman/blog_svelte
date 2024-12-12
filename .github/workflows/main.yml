@@ -10,20 +10,15 @@ jobs:
 
       - name: Get anonymous token
         run: |
-          # "repository:library/alpine:pull" のscopeで匿名トークンを取得する
-          token=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull" | jq -r .token)
-          echo "token=$token" >> $GITHUB_ENV
-
-      - name: Docker pull anonymously
-        run: docker pull alpine:latest
+          # Docker Hubの匿名トークン取得
+          TOKEN=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull" | jq -r .token)
+          echo "TOKEN=$TOKEN" >> $GITHUB_ENV
 
       - name: Check Rate Limits
         run: |
-          # 取得したトークンをAuthorizationヘッダにセットしてHEADリクエスト
-          response=$(curl -s -I -H "Authorization: Bearer $token" https://registry-1.docker.io/v2/library/alpine/manifests/latest)
-          
+          # トークンを利用してRate Limit情報取得
+          response=$(curl -sI -H "Authorization: Bearer $TOKEN" "https://registry-1.docker.io/v2/library/alpine/manifests/latest")
           echo "$response"
           echo "----"
-
           remaining=$(echo "$response" | grep -i "RateLimit-Remaining" | awk '{print $2}')
           echo "RateLimit-Remaining: $remaining"
