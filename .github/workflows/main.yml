@@ -8,15 +8,22 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
+      - name: Get anonymous token
+        run: |
+          # トークン取得: JSONから'token'フィールドを抽出
+          raw_json=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull")
+          echo "Raw JSON: $raw_json"  # デバッグ用出力
+          TOKEN=$(echo "$raw_json" | jq -r '.token')
+          echo "TOKEN: $TOKEN"       # トークンが正しく取得できたか確認
+          echo "TOKEN=$TOKEN" >> $GITHUB_ENV
+
       - name: Check Rate Limits
         run: |
-          TOKEN=$(curl -s "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/alpine:pull" | jq -r .token)
-          echo "TOKEN: $TOKEN"
-          response=$(curl -v -sI -H "Authorization: Bearer $TOKEN" "https://registry-1.docker.io/v2/library/alpine/manifests/latest")
+          # 環境変数からトークンを読み込み
+          echo "Using TOKEN: $TOKEN"
+          response=$(curl -sI -H "Authorization: Bearer $TOKEN" "https://registry-1.docker.io/v2/library/alpine/manifests/latest")
           echo "Full headers:"
           echo "$response"
-          
           echo "----"
           remaining=$(echo "$response" | grep -i "RateLimit-Remaining" | awk '{print $2}')
           echo "RateLimit-Remaining: $remaining"
-
